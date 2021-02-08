@@ -1,0 +1,35 @@
+$word-color: #fff;
+@font-face {
+    font-family: OpenSans;
+    src: url(./font/OpenSans-Regular.ttf);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    font-family: OpenSans;
+    color: $word-color;
+}
+
+body {
+    background: url(./assets/background.png);
+    background-size: 100% 100%;
+    background-attachment: fixed;
+    font-size: 14px;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+@media screen and (max-width: 767px) {
+    body {
+        background: url(./assets/background2.jpg);
+        background-size: cover;
+        background-attachment: fixed;
+        max-width: 100%;
+        overflow-x: hidden;
+        font-size: 10px;
+    }
+}

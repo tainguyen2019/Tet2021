@@ -1,0 +1,28 @@
+$button-color-normal: orange;
+$button-color-hover: red;
+.gift-container {
+    button {
+        background: $button-color-normal;
+        padding: 8px 16px;
+        margin: 16px 0;
+    }
+    button:hover {
+        background: $button-color-hover;
+    }
+    button:active {
+        animation: zoom-button 0.3s ease-out;
+    }
+    img {
+        width: 85%;
+        height: auto;
+    }
+}
+
+@keyframes zoom-button {
+    from {
+        scale: 1;
+    }
+    to {
+        scale: 2;
+    }
+}

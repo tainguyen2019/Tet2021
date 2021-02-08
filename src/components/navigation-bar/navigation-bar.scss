@@ -1,0 +1,31 @@
+.nav-container {
+    .list-link {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        background: orange;
+        padding: 8px;
+        .link-item {
+            text-decoration: none;
+            color: white;
+            font-size: 1.25rem;
+        }
+        .link-active {
+            font-size: 1.625rem;
+            color: red;
+            font-weight: bold;
+        }
+        @media screen and (min-width: 768px) {
+            .link-active::before {
+                content: url(../../assets/icon.svg);
+            }
+            .link-active::after {
+                content: url(../../assets/icon.svg);
+            }
+        }
+        .link-item:hover {
+            color: red;
+            font-weight: bold;
+        }
+    }
+}

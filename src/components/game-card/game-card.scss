@@ -1,0 +1,6 @@
+.game-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    height: calc(100vh - 64px);
+}
