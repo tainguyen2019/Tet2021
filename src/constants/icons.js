@@ -13,3 +13,4 @@ export const listIcon = iconNames.reduce(
 );
 
 export const frontIcon = "/icons/card-2021.svg";
+export const iconTrophy = "/icons/icon-trophy.svg";

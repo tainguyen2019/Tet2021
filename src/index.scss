@@ -1,7 +1,6 @@
-$word-color: #fff;
 @font-face {
-    font-family: OpenSans;
-    src: url(./font/OpenSans-Regular.ttf);
+    font-family: Pacifico;
+    src: url(./fonts/Pacifico-Regular.ttf);
 }
 
 * {
@@ -10,15 +9,14 @@ $word-color: #fff;
     border: none;
     outline: none;
     box-sizing: border-box;
-    font-family: OpenSans;
-    color: $word-color;
+    font-family: Pacifico;
 }
 
 body {
     background: url(./assets/background.png);
     background-size: 100% 100%;
     background-attachment: fixed;
-    font-size: 14px;
+    font-size: 18px;
     max-width: 100%;
     overflow-x: hidden;
 }
@@ -30,6 +28,6 @@ body {
         background-attachment: fixed;
         max-width: 100%;
         overflow-x: hidden;
-        font-size: 10px;
+        font-size: 14px;
     }
 }

@@ -1,17 +1,29 @@
 import { useCallback, useState, useEffect } from "react";
 import Card from "../card";
-import { listIcon, frontIcon, iconNames } from "../../constants/icons";
+import {
+  listIcon,
+  frontIcon,
+  iconNames,
+  iconTrophy,
+} from "../../constants/icons";
 import { shuffleArray, generateCardState, getRandomImage } from "./utils";
 import "./game-card.scss";
-import { listImage, imageKeys } from "../../constants/images";
+import { listImage, imageKeys, defaultImage } from "../../constants/images";
+import myStorage from "../../services/myStorage";
 
 const collection = iconNames.concat(iconNames);
 const shuffledNames = shuffleArray(collection);
 const defaultCardState = generateCardState(collection);
-const imageKey = getRandomImage(imageKeys);
+const existImages = JSON.parse(myStorage.getItem("images")) || [];
+const defaultKey = getRandomImage(imageKeys, existImages);
+const lengthCard = 16;
+const isDefaultImageValue = defaultKey ? false : true;
 export default function GameCard() {
   const [openedKeys, setOpenedKeys] = useState([]);
   const [cardState, setCardState] = useState(defaultCardState);
+  const [completed, setCompleted] = useState(false);
+  const [imageKey, setImageKey] = useState(defaultKey);
+  const [isDefaultImage, setIsDefaultImage] = useState(isDefaultImageValue);
 
   const handleClick = useCallback(
     (name, index, isOpened) => () => {
@@ -37,6 +49,21 @@ export default function GameCard() {
     []
   );
 
+  const handleReturn = () => {
+    setCompleted(false);
+  };
+
+  const hanldeNewgame = () => {
+    const currentExistImages = JSON.parse(myStorage.getItem("images")) || [];
+    const newKey = getRandomImage(imageKeys, currentExistImages);
+    setCompleted(false);
+    if (!newKey) {
+      setIsDefaultImage(true);
+    }
+    setImageKey(newKey);
+    setCardState(defaultCardState);
+  };
+
   useEffect(() => {
     if (openedKeys.length === 2) {
       const [key1, key2] = openedKeys;
@@ -50,40 +77,80 @@ export default function GameCard() {
           }));
         }, 1000);
       } else {
+        const cardCleared = Object.values(cardState)
+          .map((item) => item["cleared"])
+          .reduce((acc, item) => (item ? acc + 1 : acc), 0);
         setTimeout(() => {
           setCardState((oldState) => ({
             ...oldState,
             [key1]: { ...oldState[key1], cleared: true },
             [key2]: { ...oldState[key2], cleared: true },
           }));
+          if (cardCleared === lengthCard - 2) {
+            const currentExistImages =
+              JSON.parse(myStorage.getItem("images")) || [];
+            setCompleted(true);
+            myStorage.setItem(
+              "images",
+              JSON.stringify([...currentExistImages, imageKey])
+            );
+          }
         }, 1000);
       }
       setOpenedKeys([]);
     }
-  }, [openedKeys, setCardState]);
-  console.log(imageKey);
+  }, [openedKeys, cardState, imageKey]);
+
   return (
-    <div
-      className="game-container"
-      style={{
-        background: `url(${listImage[imageKey]}) no-repeat`,
-        backgroundSize: "100% 100%",
-      }}
-    >
-      {shuffledNames.map((name, index) => {
-        const key = `${name}-${index}`;
-        const { opened, cleared } = cardState[key];
-        return (
-          <Card
-            key={`${name}-${index}`}
-            backImage={listIcon[name]}
-            frontImage={frontIcon}
-            open={opened}
-            clear={cleared}
-            onClick={handleClick(name, index, opened)}
-          />
-        );
-      })}
+    <div className="game-container">
+      {!isDefaultImage && (
+        <div
+          className="game"
+          style={{
+            backgroundImage: `url(${listImage[imageKey]})`,
+            backgroundSize: "100% 100%",
+            backgroundRepeat: "no-repeat",
+          }}
+        >
+          {shuffledNames.map((name, index) => {
+            const key = `${name}-${index}`;
+            const { opened, cleared } = cardState[key];
+            return (
+              <Card
+                key={`${name}-${index}`}
+                backImage={listIcon[name]}
+                frontImage={frontIcon}
+                open={opened}
+                clear={cleared}
+                onClick={handleClick(name, index, opened)}
+              />
+            );
+          })}
+        </div>
+      )}
+      {completed && !isDefaultImage && (
+        <div className="popup">
+          <div className="title">BẠN CỪ ĐẤY!!!</div>
+          <div className="content">
+            <img src={iconTrophy} alt="" />
+          </div>
+          <div className="footer">
+            <button onClick={handleReturn}>Quay lại</button>
+            <button onClick={hanldeNewgame}>Màn mới</button>
+          </div>
+        </div>
+      )}
+
+      {isDefaultImage && (
+        <div
+          className="game"
+          style={{
+            backgroundImage: `url(${defaultImage})`,
+            backgroundSize: "100% 100%",
+            backgroundRepeat: "no-repeat",
+          }}
+        ></div>
+      )}
     </div>
   );
 }

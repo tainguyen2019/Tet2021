@@ -15,6 +15,8 @@ export function generateCardState(collection) {
     }, {});
 }
 
-export function getRandomImage(array) {
-    return array[Math.floor(Math.random() * array.length)];
+export function getRandomImage(array, filterArr) {
+    const processArray = array.filter((item) => !filterArr.includes(item));
+    if (processArray.length === 0) return "";
+    return processArray[Math.floor(Math.random() * processArray.length)];
 }

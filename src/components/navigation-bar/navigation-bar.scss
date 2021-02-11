@@ -8,19 +8,19 @@
         .link-item {
             text-decoration: none;
             color: white;
-            font-size: 1.25rem;
+            font-size: 1.5rem;
         }
         .link-active {
-            font-size: 1.625rem;
+            font-size: 1.75rem;
             color: red;
             font-weight: bold;
         }
         @media screen and (min-width: 768px) {
             .link-active::before {
-                content: url(../../assets/icon.svg);
+                content: url(../../assets/icon-nav.svg);
             }
             .link-active::after {
-                content: url(../../assets/icon.svg);
+                content: url(../../assets/icon-nav.svg);
             }
         }
         .link-item:hover {
